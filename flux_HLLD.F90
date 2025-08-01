@@ -1,12 +1,5 @@
 #include "config.h"
-#ifndef FLUX_SCHEME_MHD
-ERROR: this routine is only for FLUX_SCHEME_MHD. Check config.h and Makefile.
-#endif
 
-! Hyperbolic divergence cleaning を無効にする。
-! #define WO_DIVB_CLEANING
-
-! EGLM 形式を採用する。そうでない場合には mixed GLMが採用される。
 #define EGLM_FORMULATION
 
 module flux_eos
@@ -84,7 +77,6 @@ contains
     sqrtpi4i = 1.d0/SQRTPI4
     call util_arroffset(ndir,io,jo,ko)
     do k = KMIN-ko, KMAX
-!$omp parallel do private(i,bxl,bxr,psil,psir,bxm,psim,bxm2,rhol,ul,vl,wl,byl,bzl,pl,pbl,ptl,el,rhor,ur,vr,wr,byr,bzr,pr,pbr,ptr,er,rhoil,rhoir,csl2,csr2,cal2,car2,caxl2,caxr2,cf_l,cf_r,sl,sr,sm,rhoal,rhoar,sql,sqr,sal,sar,swl,swal,swml,swmr,swar,swr,swt,pta,denom_l,sw_deg_l,ual,val,wal,byal,bzal,ptal,eal,denom_r,sw_deg_r,uar,var,war,byar,bzar,ptar,ear,sqlri,signbxm,vm,wm,bym,bzm,rhoml,ptml,uml,vml,wml,byml,bzml,eml,rhomr,ptmr,umr,vmr,wmr,bymr,bzmr,emr,rho,u,v,w,bx,by,bz,pt,e)
        do j = JMIN-jo, JMAX
           do i = IMIN-io, IMAX
              ! -------------------------
@@ -238,7 +230,7 @@ contains
              f(i,j,k,  MP) = (e + pt)*u - bx*(u*bx+v*by+w*bz)
           enddo
        enddo
-!$omp end parallel do
+
     enddo
   end subroutine flux
   !-----------------------------------------------------------------------
@@ -287,7 +279,7 @@ contains
     do k=Kmin,Kmax
        do j=Jmin,Jmax
           do i=Imin,Imax
-             w(i,j,k,MDB)=w(i,j,k,MDB)*exp(-dtchcr)
+             w(i,j,k,MDB)=w(i,j,k,MDB)*exp(-dtchcr) 
           end do
        end do
     end do
